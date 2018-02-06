@@ -1,0 +1,99 @@
+---
+# tasks file for devopsrob.lampapache
+#- name: Enable MariaDB repo for CentOS/Redhat
+#  yum_repository:
+#    name: MariaDB
+#    description: MariaDB Repo
+#    baseurl: "{{ mariadb_url }}"
+#  when: ansible_distribution == "CentOS"
+
+- name: Add epel-release reposoitry for CentOS/Redhat
+  yum_repository:
+    name: epel
+    description: EPEL YUM Repo
+    mirrorlist: "{{ epel_url }}"
+  when: ansible_distribution == "CentOS"
+
+- name: Update OS for CentOS/Redhat
+  yum:
+    name: '*'
+    state: latest
+    update_cache: yes
+  when: ansible_distribution == "CentOS"
+
+- name: Remove ufw from Ubuntu/Debian
+  apt:
+    name: ufw
+    state: absent
+  when: ansible_distribution == "Ubuntu"
+
+- name: Update OS for Ubuntu/Debian
+  apt:
+    upgrade: dist
+    update_cache: yes
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install base packages for Centos/Redhat
+  yum:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ packages.base }}"
+  when: ansible_distribution == "CentOS"
+
+- name: Install base packages for Ubuntu/Debian
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ packages.base }}"
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install LAMP Stack packages for CentOS/Redhat
+  yum:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ packages.lamp }}"
+  notify: restart_services
+  when: ansible_distribution == "CentOS"
+
+- name: Install LAMP Stack packages for Ubuntu/Debian
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ packages.lamp }}"
+  notify: start_lamp
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install Python libraries for CentOS/Redhat
+  yum:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ packages.python }}"
+  when: ansible_distribution == "CentOS"
+
+- name: Install Python libraries for Ubuntu/Debian
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ packages.python }}"
+  when: ansible_distribution == "Ubuntu"
+
+- name: Open firewalld services
+  firewalld:
+    service: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items: "{{ firewall.services }}"
+
+- name: Open firewalld ports
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items: "{{ firewall.ports }}"
+  notify: restart_services

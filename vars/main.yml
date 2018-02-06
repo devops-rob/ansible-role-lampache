@@ -1,0 +1,4 @@
+---
+# vars file for devopsrob.lampapache
+mariadb_url: http://yum.mariadb.org/10.1/centos7-amd64
+epel_url: https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch

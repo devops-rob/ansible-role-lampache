@@ -1,0 +1,7 @@
+---
+# handlers file for devopsrob.lampapache
+- name: restart_services
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items: "{{ system_services }}"
