@@ -12,6 +12,9 @@ packages:
   lamp:
     - "httpd"
     - "mariadb-server"
+  ubuntu:
+    - "apache2"
+    - "mariadb-server"
   python:
     - "python"
     - "gcc"
@@ -20,6 +23,14 @@ packages:
     - "python-devel"
     - "MySQL-python.x86_64"
     - "mysql-connector-python"
+  python_ubuntu:
+    - "python"
+    - "python3"
+    - "python-dev"
+    - "python-pymysql"
+    - "python-pip"
+    - "gcc"
+    - "python-psutil"
 firewall:
   services:
     - "http"
@@ -31,4 +42,7 @@ system_services:
   - "ntpd"
   - "firewalld"
   - "mariadb"
+ubuntu_services:
+  - "apache2"
+  - "mysql"
 

@@ -21,10 +21,18 @@
     update_cache: yes
   when: ansible_distribution == "CentOS"
 
+- name: disable cdrom repository for Ubuntu
+  lineinfile:
+    regexp: '^deb cdrom:'
+    state: absent
+    path: /etc/apt/sources.list
+  when: ansible_distribution == "Ubuntu"
+
 - name: Remove ufw from Ubuntu/Debian
   apt:
     name: ufw
     state: absent
+    force: yes
   when: ansible_distribution == "Ubuntu"
 
 - name: Update OS for Ubuntu/Debian
@@ -63,7 +71,7 @@
     name: "{{ item }}"
     state: present
     update_cache: yes
-  with_items: "{{ packages.lamp }}"
+  with_items: "{{ packages.ubuntu }}"
   notify: start_lamp
   when: ansible_distribution == "Ubuntu"
 
@@ -80,7 +88,7 @@
     name: "{{ item }}"
     state: present
     update_cache: yes
-  with_items: "{{ packages.python }}"
+  with_items: "{{ packages.python_ubuntu }}"
   when: ansible_distribution == "Ubuntu"
 
 - name: Open firewalld services
