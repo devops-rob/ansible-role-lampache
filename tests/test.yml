@@ -1,5 +1,5 @@
 ---
-- hosts: lamp
+- hosts: all
   remote_user: root
   roles:
-    - devopsrob.lampapache
+    - role_under_test
