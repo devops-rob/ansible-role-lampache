@@ -52,7 +52,7 @@ script:
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
 
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm which java'
+  # - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm which java'
 
 notifications:
   # Notify Ansible Galaxy when a role builds successfully.

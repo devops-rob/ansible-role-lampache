@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/robertraybarnes/ansible-role-lampache.svg?branch=master)](https://travis-ci.org/robertraybarnes/ansible-role-lampache)
+
 Lampache
 =========
 
